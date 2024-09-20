@@ -17,6 +17,12 @@
   src: url('/fonts/Paperlogy-7Bold.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Tantan';
+  font-weight: 700;
+  src: url('/fonts/tantan.ttf') format('truetype');
+}
+
 a {
   font-weight: 500;
   color: #646cff;

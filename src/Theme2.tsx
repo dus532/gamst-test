@@ -104,7 +104,7 @@ function Theme2() {
                 height: '100%',
                 background: '#DD2121',
                 fontWeight: 700,
-                fontFamily: 'Paperlogy',
+                fontFamily: 'Tantan',
                 fontSize: 48,
                 display: 'flex',
                 alignItems: 'center',
@@ -122,6 +122,7 @@ function Theme2() {
               alignItems: 'center',
               justifyContent: 'center',
               width: 260,
+              fontFamily: 'Pretendard',
             }}
           >
             <div
@@ -182,7 +183,7 @@ function Theme2() {
                 height: '100%',
                 background: '#87B3E2',
                 fontWeight: 700,
-                fontFamily: 'Paperlogy',
+                fontFamily: 'Tantan',
                 fontSize: 48,
                 display: 'flex',
                 alignItems: 'center',
@@ -213,9 +214,9 @@ function Theme2() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: 40,
+              fontSize: 36,
               fontWeight: 700,
-              fontFamily: 'Chivo Mono',
+              fontFamily: 'Tantan',
             }}
           >
             {min}:{sec}
