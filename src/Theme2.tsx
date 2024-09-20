@@ -28,9 +28,14 @@ function Theme2() {
   const sec = time % 60 > 9 ? time % 60 : `0${time % 60}`;
 
   const [isGoal, setIsGoal] = useState(false);
+  const [homeScore, setHomeScore] = useState(ranNum);
 
   function onGoal() {
     setIsGoal(true);
+
+    setTimeout(() => {
+      setHomeScore(homeScore + 1);
+    }, 3000);
 
     setTimeout(() => {
       setIsGoal(false);
@@ -129,7 +134,7 @@ function Theme2() {
                   width: 100,
                 }}
               >
-                {ranNum}
+                {homeScore}
               </div>
               <LogoEPL />
               <div
