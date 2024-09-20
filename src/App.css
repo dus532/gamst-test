@@ -56,3 +56,31 @@
 .typoGoal {
   animation: typoGoal 6s forwards;
 }
+
+@keyframes var {
+  0% {
+    padding: 0;
+    opacity: 0;
+  }
+  100% {
+    padding: 0 20px;
+    opacity: 1;
+  }
+}
+
+.var {
+  animation: var 0.35s forwards;
+}
+
+@keyframes extratime {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.extratime {
+  animation: extratime 0.35s forwards;
+}
