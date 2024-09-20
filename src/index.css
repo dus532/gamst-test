@@ -11,6 +11,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+@font-face {
+  font-family: 'Paperlogy';
+  font-weight: 700;
+  src: url('/fonts/Paperlogy-7Bold.ttf') format('truetype');
+}
+
 a {
   font-weight: 500;
   color: #646cff;

@@ -157,6 +157,7 @@ function Theme2() {
             justifyContent: 'center',
             fontSize: 40,
             fontWeight: 700,
+            fontFamily: 'Chivo Mono',
           }}
         >
           {min}:{sec}

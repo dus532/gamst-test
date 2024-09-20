@@ -62,10 +62,11 @@ function Theme1() {
           style={{
             width: '100%',
             textAlign: 'center',
-            fontWeight: 700,
+            fontWeight: 500,
             fontSize: 40,
             color: 'black',
-            letterSpacing: 2,
+            letterSpacing: 0,
+            fontFamily: 'Chivo Mono',
           }}
         >
           {min}:{sec}
@@ -130,7 +131,8 @@ function Theme1() {
             justifyContent: 'center',
             gap: 24,
             fontSize: 36,
-            fontWeight: 900,
+            fontWeight: 500,
+            fontFamily: 'Chivo Mono',
           }}
         >
           <div style={{ width: 20 }}>{ranNum}</div>
