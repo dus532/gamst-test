@@ -83,23 +83,19 @@ function Theme2() {
     setViewTimer(!viewTimer);
   }
 
-  const left = type === '1st' || type === 'ot1' ? colors.home : colors.away;
-  const leftSub =
-    type === '1st' || type === 'ot1' ? colors.home_sub : colors.away_sub;
-  const leftTextColor =
-    type === '1st' || type === 'ot1' ? colors.home_text : colors.away_text;
+  const left = colors.home;
+  const leftSub = colors.home_sub;
+  const leftTextColor = colors.home_text;
 
-  const right = type === '1st' || type === 'ot1' ? colors.away : colors.home;
-  const rightSub =
-    type === '1st' || type === 'ot1' ? colors.away_sub : colors.home_sub;
-  const rightTextColor =
-    type === '1st' || type === 'ot1' ? colors.away_text : colors.home_text;
+  const right = colors.away;
+  const rightSub = colors.away_sub;
+  const rightTextColor = colors.away_text;
 
-  const leftTeam = type === '1st' || type === 'ot1' ? teams.home : teams.away;
-  const rightTeam = type === '1st' || type === 'ot1' ? teams.away : teams.home;
+  const leftTeam = teams.home;
+  const rightTeam = teams.away;
 
-  const leftScore = type === '1st' || type === 'ot1' ? homeScore : awayScore;
-  const rightScore = type === '1st' || type === 'ot1' ? awayScore : homeScore;
+  const leftScore = homeScore;
+  const rightScore = awayScore;
 
   return (
     <div>

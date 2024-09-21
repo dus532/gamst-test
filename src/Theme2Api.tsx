@@ -47,30 +47,22 @@ function Theme2() {
     away: data?.away_name,
   };
 
-  const left = type === '1st' || type === 'ot1' ? colors.home : colors.away;
-  const leftSub =
-    type === '1st' || type === 'ot1' ? colors.home_sub : colors.away_sub;
-  const leftTextColor =
-    type === '1st' || type === 'ot1' ? colors.home_text : colors.away_text;
+  const left = colors.home;
+  const leftSub = colors.home_sub;
+  const leftTextColor = colors.home_text;
 
-  const right = type === '1st' || type === 'ot1' ? colors.away : colors.home;
-  const rightSub =
-    type === '1st' || type === 'ot1' ? colors.away_sub : colors.home_sub;
-  const rightTextColor =
-    type === '1st' || type === 'ot1' ? colors.away_text : colors.home_text;
+  const right = colors.away;
+  const rightSub = colors.away_sub;
+  const rightTextColor = colors.away_text;
 
-  const leftTeam = type === '1st' || type === 'ot1' ? teams.home : teams.away;
-  const rightTeam = type === '1st' || type === 'ot1' ? teams.away : teams.home;
+  const leftTeam = teams.home;
+  const rightTeam = teams.away;
 
-  const leftScore =
-    type === '1st' || type === 'ot1' ? data?.home_score : data?.away_score;
-  const rightScore =
-    type === '1st' || type === 'ot1' ? data?.away_score : data?.home_score;
+  const leftScore = data?.home_score;
+  const rightScore = data?.away_score;
 
-  const leftGoal =
-    type === '1st' || type === 'ot1' ? data?.is_home_goal : data?.is_away_goal;
-  const rightGoal =
-    type === '1st' || type === 'ot1' ? data?.is_away_goal : data?.is_home_goal;
+  const leftGoal = data?.is_home_goal;
+  const rightGoal = data?.is_away_goal;
 
   const isExtraTime = data?.extra_time > 0;
 
