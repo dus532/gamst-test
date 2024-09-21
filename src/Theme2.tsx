@@ -5,21 +5,21 @@ import Triangle from './Triangle';
 import LogoEPL from './LogoEPL';
 
 import './App.css';
-import { randomNumber, standardTime } from './time';
+import { colors, standardTime, teams } from './const';
 import { BounceLoader } from 'react-spinners';
-
-const ranNum = randomNumber(1, 5);
 
 function Theme2() {
   const [time, setTime] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const diff = dayjs().diff(dayjs(standardTime), 'second');
-      setTime(diff);
-    }, 1000);
+    if (standardTime) {
+      const interval = setInterval(() => {
+        const diff = dayjs().diff(dayjs(standardTime), 'second');
+        setTime(diff);
+      }, 1000);
 
-    return () => clearInterval(interval);
+      return () => clearInterval(interval);
+    }
   }, [time]);
 
   const min =
@@ -29,9 +29,14 @@ function Theme2() {
   const sec = time % 60 > 9 ? time % 60 : `0${time % 60}`;
 
   const [isGoal, setIsGoal] = useState(false);
+  const [isRightGoal, setIsRightGoal] = useState(false);
   const [isVAR, setIsVAR] = useState(false);
   const [isExtraTime, setIsExtraTime] = useState(false);
-  const [homeScore, setHomeScore] = useState(ranNum);
+  const [homeScore, setHomeScore] = useState(0);
+  const [awayScore, setAwayScore] = useState(0);
+  const [type, setType] = useState<'1st' | '2st' | 'ot1' | 'ot2' | 'pk'>('1st');
+  const [viewTimer, setViewTimer] = useState(true);
+  const [specialBottom, setSpecialBottom] = useState('');
 
   function onGoal() {
     setIsGoal(true);
@@ -45,6 +50,18 @@ function Theme2() {
     }, 6000);
   }
 
+  function onRightGoal() {
+    setIsRightGoal(true);
+
+    setTimeout(() => {
+      setAwayScore(awayScore + 1);
+    }, 3000);
+
+    setTimeout(() => {
+      setIsRightGoal(false);
+    }, 6000);
+  }
+
   function onVAR() {
     setIsVAR(!isVAR);
   }
@@ -52,6 +69,28 @@ function Theme2() {
   function onExtraTime() {
     setIsExtraTime(!isExtraTime);
   }
+
+  function onTimer() {
+    setViewTimer(!viewTimer);
+  }
+
+  const left = type === '1st' || type === 'ot1' ? colors.home : colors.away;
+  const leftSub =
+    type === '1st' || type === 'ot1' ? colors.home_sub : colors.away_sub;
+  const leftTextColor =
+    type === '1st' || type === 'ot1' ? colors.home_text : colors.away_text;
+
+  const right = type === '1st' || type === 'ot1' ? colors.away : colors.home;
+  const rightSub =
+    type === '1st' || type === 'ot1' ? colors.away_sub : colors.home_sub;
+  const rightTextColor =
+    type === '1st' || type === 'ot1' ? colors.away_text : colors.home_text;
+
+  const leftTeam = type === '1st' || type === 'ot1' ? teams.home : teams.away;
+  const rightTeam = type === '1st' || type === 'ot1' ? teams.away : teams.home;
+
+  const leftScore = type === '1st' || type === 'ot1' ? homeScore : awayScore;
+  const rightScore = type === '1st' || type === 'ot1' ? awayScore : homeScore;
 
   return (
     <div>
@@ -68,8 +107,9 @@ function Theme2() {
             display: 'flex',
             height: 80,
             width: 'auto',
-            background: 'black',
+            background: isGoal ? leftSub : isRightGoal ? rightSub : '',
             position: 'relative',
+            zIndex: 2,
           }}
         >
           <div
@@ -77,16 +117,16 @@ function Theme2() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
-              width: '100%',
               height: '100%',
               position: 'absolute',
-              right: 60,
               top: 0,
+              right: isGoal ? 40 : undefined,
+              left: isRightGoal ? 40 : undefined,
               fontSize: 60,
               fontWeight: 900,
               fontFamily: 'Pretendard',
             }}
-            className={isGoal ? 'typoGoal' : ''}
+            className={isGoal || isRightGoal ? 'typoGoal' : ''}
           >
             GOAL
           </div>
@@ -97,32 +137,51 @@ function Theme2() {
               position: 'relative',
               zIndex: 2,
             }}
+            className={isRightGoal ? 'opacity' : ''}
           >
             <div
               style={{
-                width: 220,
+                width: 300,
                 height: '100%',
-                background: '#DD2121',
+                background: left,
                 fontWeight: 700,
                 fontFamily: 'Tantan',
                 fontSize: 48,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                color: leftTextColor,
+                borderRadius: '8px 0 0 0',
               }}
             >
-              맨유
+              {leftTeam}
             </div>
-            <Triangle />
+            <div
+              style={{
+                height: '100%',
+                left: 300,
+                position: 'absolute',
+              }}
+            >
+              <Triangle fill={left} />
+            </div>
+            <div
+              style={{
+                width: 180,
+                background: leftSub,
+              }}
+            />
           </div>
           <div
             style={{
-              background: 'black',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               width: 260,
               fontFamily: 'Pretendard',
+              position: 'absolute',
+              height: 80,
+              left: 'calc(50% - 130px)',
             }}
           >
             <div
@@ -134,30 +193,30 @@ function Theme2() {
                 fontWeight: 900,
                 position: 'relative',
                 gap: 12,
-                zIndex: 3,
+                zIndex: 10,
               }}
-              className={isGoal ? 'opacity' : ''}
+              className={isGoal || isRightGoal ? 'opacity' : ''}
             >
               <div
                 style={{
                   textAlign: 'right',
                   position: 'relative',
-                  top: -8,
+                  top: -12,
                   width: 100,
                 }}
               >
-                {homeScore}
+                {leftScore}
               </div>
               <LogoEPL />
               <div
                 style={{
                   textAlign: 'left',
                   position: 'relative',
-                  top: -8,
+                  top: -12,
                   width: 100,
                 }}
               >
-                0
+                {rightScore}
               </div>
             </div>
           </div>
@@ -170,34 +229,74 @@ function Theme2() {
           >
             <div
               style={{
+                width: 220,
+                background: rightSub,
+              }}
+            />
+            <div
+              style={{
                 height: '100%',
-                left: '0px',
+                right: 300,
+                transform: 'rotate(180deg)',
                 position: 'absolute',
               }}
             >
-              <Triangle fill='#3867A9' />
+              <Triangle fill={right} />
             </div>
             <div
               style={{
-                width: 260,
+                width: 300,
                 height: '100%',
-                background: '#87B3E2',
+                background: right,
                 fontWeight: 700,
                 fontFamily: 'Tantan',
                 fontSize: 48,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#0B223A',
+                color: rightTextColor,
+                borderRadius: '0 8px 0 0',
               }}
             >
-              맨시티
+              {rightTeam}
             </div>
           </div>
         </div>
+        {specialBottom && specialBottom !== '' ? (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginRight: '20px',
+              height: 56,
+              overflow: 'hidden',
+              borderRadius: isExtraTime ? '' : '0 0 8px 8px',
+              zIndex: 1,
+            }}
+            className='extratime'
+          >
+            <div
+              style={{
+                height: '100%',
+                minWidth: 400,
+                padding: '0 60px',
+                background: '#4b2257',
+                display: 'flex',
+                color: 'white',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 28,
+                fontWeight: 700,
+                fontFamily: 'Tantan',
+              }}
+            >
+              {specialBottom}
+            </div>
+          </div>
+        ) : null}
         <div
           style={{
-            display: 'flex',
+            display: viewTimer ? 'flex' : 'none',
             justifyContent: 'center',
             marginRight: '20px',
             height: 64,
@@ -219,7 +318,7 @@ function Theme2() {
               fontFamily: 'Tantan',
             }}
           >
-            {min}:{sec}
+            {standardTime ? `${min}:${sec}` : '경기전'}
           </div>
           {isVAR ? (
             <div
@@ -270,9 +369,19 @@ function Theme2() {
           </div>
         ) : null}
       </div>
-      <button onClick={onGoal}>골</button>
+      <button onClick={onGoal}>{leftTeam} 골</button>
+      <button onClick={onRightGoal}>{rightTeam} 골</button>
       <button onClick={onVAR}>VAR</button>
       <button onClick={onExtraTime}>추가시간</button>
+      <button onClick={() => setType('1st')}>1st</button>
+      <button onClick={() => setType('2st')}>2st</button>
+      <button onClick={onTimer}>타이머</button>
+      <input
+        type='text'
+        onKeyDown={(e) =>
+          e.key === 'Enter' && setSpecialBottom(e.currentTarget.value)
+        }
+      />
     </div>
   );
 }

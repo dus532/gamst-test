@@ -3,7 +3,7 @@ import BGArrow from './BGArrow';
 import dayjs from 'dayjs';
 
 import './App.css';
-import { randomNumber, standardTime } from './time';
+import { randomNumber, standardTime } from './const';
 
 const ranNum = randomNumber(1, 5);
 
