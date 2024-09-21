@@ -5,22 +5,23 @@ import Triangle from './Triangle';
 import LogoEPL from './LogoEPL';
 
 import './App.css';
-import { colors, standardTime, teams } from './const';
 import { BounceLoader } from 'react-spinners';
+import { useOverlayData } from './overlay';
 
 function Theme2() {
   const [time, setTime] = useState(0);
+  const data = useOverlayData();
 
   useEffect(() => {
-    if (standardTime) {
+    if (data?.standard_time) {
       const interval = setInterval(() => {
-        const diff = dayjs().diff(dayjs(standardTime), 'second');
+        const diff = dayjs().diff(dayjs(data?.standard_time), 'second');
         setTime(diff);
-      }, 1000);
+      }, 100);
 
       return () => clearInterval(interval);
     }
-  }, [time]);
+  }, [data?.standard_time, time]);
 
   const min =
     Math.floor(time / 60) > 9
@@ -28,60 +29,23 @@ function Theme2() {
       : `0${Math.floor(time / 60)}`;
   const sec = time % 60 > 9 ? time % 60 : `0${time % 60}`;
 
-  const [isGoal, setIsGoal] = useState(false);
-  const [isRightGoal, setIsRightGoal] = useState(false);
-  const [isVAR, setIsVAR] = useState(false);
-  const [isExtraTime, setIsExtraTime] = useState(false);
-  const [homeScore, setHomeScore] = useState(0);
-  const [awayScore, setAwayScore] = useState(0);
-  const [type, setType] = useState<'1st' | '2nd' | 'ot1' | 'ot2' | 'pk'>('1st');
-  const [viewTimer, setViewTimer] = useState(true);
-  const [specialBottom, setSpecialBottom] = useState('');
-  const [specialTop, setSpecialTop] = useState('');
+  const type = data?.time_type;
+  const specialTop = data?.special_top;
+  const specialBottom = data?.special_bottom;
 
-  function onGoal() {
-    setIsGoal(true);
+  const colors = {
+    home: data?.home_color,
+    home_sub: data?.home_sub_color,
+    home_text: data?.home_text_color,
+    away: data?.away_color,
+    away_sub: data?.away_sub_color,
+    away_text: data?.away_text_color,
+  };
 
-    setTimeout(() => {
-      if (type === '1st' || type === 'ot1') {
-        setHomeScore(homeScore + 1);
-      } else {
-        setAwayScore(awayScore + 1);
-      }
-    }, 3000);
-
-    setTimeout(() => {
-      setIsGoal(false);
-    }, 6000);
-  }
-
-  function onRightGoal() {
-    setIsRightGoal(true);
-
-    setTimeout(() => {
-      if (type === '1st' || type === 'ot1') {
-        setAwayScore(awayScore + 1);
-      } else {
-        setHomeScore(homeScore + 1);
-      }
-    }, 3000);
-
-    setTimeout(() => {
-      setIsRightGoal(false);
-    }, 6000);
-  }
-
-  function onVAR() {
-    setIsVAR(!isVAR);
-  }
-
-  function onExtraTime() {
-    setIsExtraTime(!isExtraTime);
-  }
-
-  function onTimer() {
-    setViewTimer(!viewTimer);
-  }
+  const teams = {
+    home: data?.home_name,
+    away: data?.away_name,
+  };
 
   const left = type === '1st' || type === 'ot1' ? colors.home : colors.away;
   const leftSub =
@@ -98,8 +62,17 @@ function Theme2() {
   const leftTeam = type === '1st' || type === 'ot1' ? teams.home : teams.away;
   const rightTeam = type === '1st' || type === 'ot1' ? teams.away : teams.home;
 
-  const leftScore = type === '1st' || type === 'ot1' ? homeScore : awayScore;
-  const rightScore = type === '1st' || type === 'ot1' ? awayScore : homeScore;
+  const leftScore =
+    type === '1st' || type === 'ot1' ? data?.home_score : data?.away_score;
+  const rightScore =
+    type === '1st' || type === 'ot1' ? data?.away_score : data?.home_score;
+
+  const leftGoal =
+    type === '1st' || type === 'ot1' ? data?.is_home_goal : data?.is_away_goal;
+  const rightGoal =
+    type === '1st' || type === 'ot1' ? data?.is_away_goal : data?.is_home_goal;
+
+  const isExtraTime = data?.extra_time > 0;
 
   return (
     <div>
@@ -146,7 +119,7 @@ function Theme2() {
             display: 'flex',
             height: 80,
             width: 'auto',
-            background: isGoal ? leftSub : isRightGoal ? rightSub : '',
+            background: leftGoal ? leftSub : rightGoal ? rightSub : '',
             position: 'relative',
             zIndex: 2,
             borderRadius: '8px 8px 0 0',
@@ -160,13 +133,13 @@ function Theme2() {
               height: '100%',
               position: 'absolute',
               top: 0,
-              right: isGoal ? 40 : undefined,
-              left: isRightGoal ? 40 : undefined,
+              right: leftGoal ? 40 : undefined,
+              left: rightGoal ? 40 : undefined,
               fontSize: 60,
               fontWeight: 900,
               fontFamily: 'Pretendard',
             }}
-            className={isGoal || isRightGoal ? 'typoGoal' : ''}
+            className={leftGoal || rightGoal ? 'typoGoal' : ''}
           >
             GOAL
           </div>
@@ -177,7 +150,7 @@ function Theme2() {
               position: 'relative',
               zIndex: 2,
             }}
-            className={isRightGoal ? 'opacity' : ''}
+            className={rightGoal ? 'opacity' : ''}
           >
             <div
               style={{
@@ -232,17 +205,18 @@ function Theme2() {
                 fontSize: 136,
                 fontWeight: 900,
                 position: 'relative',
-                gap: 12,
+                gap: 14,
                 zIndex: 10,
               }}
-              className={isGoal || isRightGoal ? 'opacity' : ''}
+              className={leftGoal || rightGoal ? 'opacity' : ''}
             >
               <div
                 style={{
                   textAlign: 'right',
                   position: 'relative',
                   top: -12,
-                  width: 100,
+                  width: 200,
+                  letterSpacing: -4,
                   textShadow: '0 0 45px rgba(0, 0, 0, 0.5)',
                 }}
               >
@@ -254,7 +228,8 @@ function Theme2() {
                   textAlign: 'left',
                   position: 'relative',
                   top: -12,
-                  width: 100,
+                  width: 200,
+                  letterSpacing: -4,
                   textShadow: '0 0 45px rgba(0, 0, 0, 0.5)',
                 }}
               >
@@ -267,7 +242,7 @@ function Theme2() {
               display: 'flex',
               position: 'relative',
             }}
-            className={isGoal ? 'opacity' : ''}
+            className={leftGoal ? 'opacity' : ''}
           >
             <div
               style={{
@@ -337,7 +312,7 @@ function Theme2() {
         ) : null}
         <div
           style={{
-            display: viewTimer ? 'flex' : 'none',
+            display: data?.is_timer ? 'flex' : 'none',
             justifyContent: 'center',
             marginRight: '20px',
             height: 64,
@@ -359,9 +334,9 @@ function Theme2() {
               fontFamily: 'Tantan',
             }}
           >
-            {standardTime ? `${min}:${sec}` : '경기전'}
+            {data?.standard_time ? `${min}:${sec}` : '경기전'}
           </div>
-          {isVAR ? (
+          {data?.is_var ? (
             <div
               className='var'
               style={{
@@ -406,39 +381,15 @@ function Theme2() {
               zIndex: 1,
             }}
           >
-            +5
+            +{data?.extra_time}
           </div>
         ) : null}
       </div>
-      <br />
-      <button onClick={onGoal}>{leftTeam} 골</button>
-      <button onClick={onRightGoal}>{rightTeam} 골</button>
-      <button onClick={onVAR}>VAR</button>
-      <button onClick={onExtraTime}>추가시간</button>
-      <button onClick={() => setType('1st')}>1st</button>
-      <button onClick={() => setType('2nd')}>2nd</button>
-      <button onClick={onTimer}>타이머</button>
-      <br />
-      상단 스페셜 메세지 (ex. 손흥민 선발 출전)
-      <input
-        type='text'
-        onKeyDown={(e) =>
-          e.key === 'Enter' && setSpecialTop(e.currentTarget.value)
-        }
-      />
-      <br />
-      하단 스페셜 메세지 (ex. 전반전 종료)
-      <input
-        type='text'
-        onKeyDown={(e) =>
-          e.key === 'Enter' && setSpecialBottom(e.currentTarget.value)
-        }
-      />
     </div>
   );
 }
 
-function Theme2Type() {
+function Theme2TypeApi() {
   return (
     <>
       <Theme2 />
@@ -446,4 +397,4 @@ function Theme2Type() {
   );
 }
 
-export default Theme2Type;
+export default Theme2TypeApi;

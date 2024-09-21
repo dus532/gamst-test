@@ -8,8 +8,8 @@ export default function Triangle({ fill = '#DD2121' }) {
       xmlns='http://www.w3.org/2000/svg'
     >
       <path
-        fill-rule='evenodd'
-        clip-rule='evenodd'
+        fillRule='evenodd'
+        clipRule='evenodd'
         d='M0 40L40 40L0 0V40ZM0 40L40 80L0 80V40Z'
         fill={fill}
       />
