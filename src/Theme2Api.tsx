@@ -29,7 +29,7 @@ function Theme2() {
       : `0${Math.floor(time / 60)}`;
   const sec = time % 60 > 9 ? time % 60 : `0${time % 60}`;
 
-  const type = data?.time_type;
+  // const type = data?.time_type;
   const specialTop = data?.special_top;
   const specialBottom = data?.special_bottom;
 
