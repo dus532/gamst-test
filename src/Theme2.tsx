@@ -37,6 +37,7 @@ function Theme2() {
   const [type, setType] = useState<'1st' | '2st' | 'ot1' | 'ot2' | 'pk'>('1st');
   const [viewTimer, setViewTimer] = useState(true);
   const [specialBottom, setSpecialBottom] = useState('');
+  const [specialTop, setSpecialTop] = useState('');
 
   function onGoal() {
     setIsGoal(true);
@@ -110,6 +111,36 @@ function Theme2() {
           flexDirection: 'column',
         }}
       >
+        <div
+          style={{
+            display: 'flex',
+            opacity: specialTop && specialTop !== '' ? 1 : 0,
+            justifyContent: 'center',
+            marginRight: '20px',
+            overflow: 'hidden',
+            borderRadius: '8px 8px 0 0',
+            zIndex: 1,
+            transition: 'opacity 0.5s',
+          }}
+        >
+          <div
+            style={{
+              height: '100%',
+              minWidth: 400,
+              padding: '4px 60px 12px',
+              background: '#f8f8f8',
+              display: 'flex',
+              color: '#4a1253',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 28,
+              fontWeight: 700,
+              fontFamily: 'Tantan',
+            }}
+          >
+            {specialTop && specialTop !== '' ? specialTop : '-'}
+          </div>
+        </div>
         <div
           style={{
             display: 'flex',
@@ -212,6 +243,7 @@ function Theme2() {
                   position: 'relative',
                   top: -12,
                   width: 100,
+                  textShadow: '0 0 45px rgba(0, 0, 0, 0.5)',
                 }}
               >
                 {leftScore}
@@ -223,6 +255,7 @@ function Theme2() {
                   position: 'relative',
                   top: -12,
                   width: 100,
+                  textShadow: '0 0 45px rgba(0, 0, 0, 0.5)',
                 }}
               >
                 {rightScore}
@@ -287,7 +320,6 @@ function Theme2() {
             <div
               style={{
                 height: '100%',
-                minWidth: 400,
                 padding: '0 60px',
                 background: '#4b2257',
                 display: 'flex',
@@ -378,6 +410,7 @@ function Theme2() {
           </div>
         ) : null}
       </div>
+      <br />
       <button onClick={onGoal}>{leftTeam} 골</button>
       <button onClick={onRightGoal}>{rightTeam} 골</button>
       <button onClick={onVAR}>VAR</button>
@@ -385,6 +418,16 @@ function Theme2() {
       <button onClick={() => setType('1st')}>1st</button>
       <button onClick={() => setType('2st')}>2st</button>
       <button onClick={onTimer}>타이머</button>
+      <br />
+      상단 스페셜 메세지 (ex. 손흥민 선발 출전)
+      <input
+        type='text'
+        onKeyDown={(e) =>
+          e.key === 'Enter' && setSpecialTop(e.currentTarget.value)
+        }
+      />
+      <br />
+      하단 스페셜 메세지 (ex. 전반전 종료)
       <input
         type='text'
         onKeyDown={(e) =>
