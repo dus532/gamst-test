@@ -464,7 +464,7 @@ export default function Theme2Admin() {
         </LabalInput>
         <LabalInput label='홈 팀'>
           <button
-            disabled={data?.is_home_goal}
+            disabled={data?.is_home_goal || data?.is_away_goal}
             onClick={async () => {
               await updateOverlayData({
                 is_home_goal: false,
@@ -489,7 +489,7 @@ export default function Theme2Admin() {
         </LabalInput>
         <LabalInput label='어웨이 팀'>
           <button
-            disabled={data?.is_away_goal}
+            disabled={data?.is_home_goal || data?.is_away_goal}
             onClick={async () => {
               await updateOverlayData({
                 is_away_goal: false,
