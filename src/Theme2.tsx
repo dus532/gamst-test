@@ -42,7 +42,11 @@ function Theme2() {
     setIsGoal(true);
 
     setTimeout(() => {
-      setHomeScore(homeScore + 1);
+      if (type === '1st' || type === 'ot1') {
+        setHomeScore(homeScore + 1);
+      } else {
+        setAwayScore(awayScore + 1);
+      }
     }, 3000);
 
     setTimeout(() => {
@@ -54,7 +58,11 @@ function Theme2() {
     setIsRightGoal(true);
 
     setTimeout(() => {
-      setAwayScore(awayScore + 1);
+      if (type === '1st' || type === 'ot1') {
+        setAwayScore(awayScore + 1);
+      } else {
+        setHomeScore(homeScore + 1);
+      }
     }, 3000);
 
     setTimeout(() => {
@@ -110,6 +118,7 @@ function Theme2() {
             background: isGoal ? leftSub : isRightGoal ? rightSub : '',
             position: 'relative',
             zIndex: 2,
+            borderRadius: '8px 8px 0 0',
           }}
         >
           <div
